@@ -120,7 +120,7 @@ class MyClient(discord.Client):
         if not message.content.startswith('!sync'):
             return False
         os.system('git pull')
-        os.execv(sys.executable, sys.argv + ['--updated'])
+        os.execv(sys.argv[0], sys.argv)
         return True
 
 
