@@ -1,9 +1,11 @@
 #!/bin/python3.7
 
 import os
+import sys
+
+import discord
 
 from dotenv import load_dotenv
-import discord
 
 number_emotes = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
 
@@ -41,6 +43,8 @@ class MyClient(discord.Client):
         if await MyClient.__print_help(message):
             return
 
+        if await MyClient.__sync_with_git(message):
+            return
 
     @staticmethod
     async def __create_poll(message):
@@ -107,8 +111,17 @@ class MyClient(discord.Client):
         msg = tag_user(message.author) + "\n"
         msg += '!poll "popis" "první možnost" "druhá možnost" - Vytvoří anketu. Může obsahovat dvě až devět možností.\n'
         msg += '!all_graphic - zobrazí všechny příkay pro vložení všech obrázků nebo gifů.\n'
+        msg += '!sync - synchroniuje data s projektem na githubu.\n'
         await message.channel.send(msg)
         await message.delete()
+
+    @staticmethod
+    async def __sync_with_git(message):
+        if not message.content.startswith('!sync'):
+            return False
+        os.system('git pull')
+        os.execv(sys.executable, sys.argv + ['--updated'])
+        return True
 
 
 client = MyClient()
