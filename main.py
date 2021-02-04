@@ -117,7 +117,7 @@ class MyClient(discord.Client):
         msg += '!poll "popis" "první možnost" "druhá možnost" - Vytvoří anketu. Může obsahovat dvě až devět možností.\n'
         msg += '!all_graphic - zobrazí všechny příkay pro vložení všech obrázků nebo gifů.\n'
         msg += '!sync - synchroniuje data s projektem na githubu.\n'
-        if message.author.server_permissions.administrator:
+        if message.author.guild_permissions.administrator:
             msg += '!add_graphic - přidá do možné grafiky nový obrázek.\n'
         await message.channel.send(msg)
         await message.delete()
