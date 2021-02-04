@@ -8,6 +8,8 @@ import discord
 from dotenv import load_dotenv
 
 number_emotes = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
+image_types = ["png", "jpeg", "gif", "jpg"]
+
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -31,7 +33,7 @@ class MyClient(discord.Client):
         if message.author == self.user:
             return
 
-        if await MyClient.__add_graphic(message):
+        if await MyClient.__show_graphic(message):
             return
 
         if await MyClient.__create_poll(message):
@@ -41,6 +43,9 @@ class MyClient(discord.Client):
             return
 
         if await MyClient.__print_help(message):
+            return
+
+        if await MyClient.__add_graphic(message):
             return
 
         if await MyClient.__sync_with_git(message):
@@ -76,7 +81,7 @@ class MyClient(discord.Client):
             return False
 
     @staticmethod
-    async def __add_graphic(message):
+    async def __show_graphic(message):
         if not message.content.startswith('!'):
             return False
         str = message.content[1:]
@@ -112,8 +117,24 @@ class MyClient(discord.Client):
         msg += '!poll "popis" "první možnost" "druhá možnost" - Vytvoří anketu. Může obsahovat dvě až devět možností.\n'
         msg += '!all_graphic - zobrazí všechny příkay pro vložení všech obrázků nebo gifů.\n'
         msg += '!sync - synchroniuje data s projektem na githubu.\n'
+        if message.author.server_permissions.administrator:
+            msg += '!add_graphic - přidá do možné grafiky nový obrázek.\n'
         await message.channel.send(msg)
         await message.delete()
+
+    @staticmethod
+    async def __add_graphic(message):
+        if not message.content.startswith('!add_graphic'):
+            return False
+        if message.author.guild_permissions.administrator:
+            for attachment in message.attachments:
+                if any(attachment.filename.lower().endswith(image) for image in image_types):
+                    if os.path.isfile('graphic' + attachment.filename):
+                        message.channel.send('Obrázek s tímto názvem již existuje.')
+                    else:
+                        await attachment.save(os.path.join('graphic', attachment.filename))
+            return True
+        return False
 
     @staticmethod
     async def __sync_with_git(message):
