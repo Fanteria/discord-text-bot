@@ -122,6 +122,7 @@ class MyClient(discord.Client):
         msg = tag_user(message.author) + "\n"
         msg += '!poll "popis" "první možnost" "druhá možnost" - Vytvoří anketu. Může obsahovat dvě až devět možností.\n'
         msg += '!all_graphic - zobrazí všechny příkay pro vložení všech obrázků nebo gifů.\n'
+        msg += '!light [on|off] - Přepíná světlo připojené na raspberrypi u Matěje.\n'
         msg += '!sync - synchroniuje data s projektem na githubu.\n'
         if message.author.guild_permissions.administrator:
             msg += '!add_graphic - přidá do možné grafiky nový obrázek.\n'
