@@ -7,12 +7,15 @@ import discord
 
 from dotenv import load_dotenv
 
+from socket_client import socket_client
+
 number_emotes = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
 image_types = ["png", "jpeg", "gif", "jpg"]
 
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+SOCKET_SERVER_ADDRESS = os.getenv('SOCKET_SERVER_ADDRESS')
 
 
 def get_attributes(atr_string):
@@ -49,6 +52,9 @@ class MyClient(discord.Client):
             return
 
         if await MyClient.__sync_with_git(message):
+            return
+
+        if await MyClient.__switch_light(message):
             return
 
     @staticmethod
@@ -143,6 +149,19 @@ class MyClient(discord.Client):
         os.system('git pull')
         os.execv(sys.argv[0], sys.argv)
         return True
+
+    @staticmethod
+    async def __switch_light(message):
+        if not message.content.startswith('!light'):
+            return False
+        print(message.content)
+        if not (message.content.lower() == '!light on' or message.content.lower() == '!light off'):
+            message.channel.send('Neplatný stav světla. Správně je: **!light [on|off]**')
+            return True
+        light_state = 1 if message.content.lower() == '!light on' else 0
+        socket_client.switch_light(SOCKET_SERVER_ADDRESS, light_state)
+        return True
+
 
 
 client = MyClient()
