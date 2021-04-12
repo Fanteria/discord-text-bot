@@ -162,6 +162,7 @@ class MyClient(discord.Client):
             return True
         light_state = 1 if message.content.lower() == '!light on' else 0
         socket_client.switch_light(SOCKET_SERVER_ADDRESS, light_state)
+        await message.delete()
         return True
 
 
