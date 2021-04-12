@@ -147,6 +147,7 @@ class MyClient(discord.Client):
     async def __sync_with_git(message):
         if not message.content.startswith('!sync'):
             return False
+        await message.delete()
         message.channel.send('See you soon :heart:')
         client.close()
         os.system('git pull')
