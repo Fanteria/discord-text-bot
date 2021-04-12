@@ -148,7 +148,7 @@ class MyClient(discord.Client):
         if not message.content.startswith('!sync'):
             return False
         await message.delete()
-        message.channel.send('See you soon :heart:')
+        await message.channel.send('See you soon :heart:')
         client.close()
         os.system('git pull')
         os.execv(sys.argv[0], sys.argv)
