@@ -154,7 +154,6 @@ class MyClient(discord.Client):
     async def __switch_light(message):
         if not message.content.startswith('!light'):
             return False
-        print(message.content)
         if not (message.content.lower() == '!light on' or message.content.lower() == '!light off'):
             message.channel.send('Neplatný stav světla. Správně je: **!light [on|off]**')
             return True
