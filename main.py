@@ -103,7 +103,7 @@ class MyClient(discord.Client):
 
     @staticmethod
     async def __list_graphic(message):
-        if not message.content.startswith('!all_graphic'):
+        if not message.content.startswith('!list_images'):
             return False
         ret = ''
         graphic = 'graphic'
@@ -121,17 +121,17 @@ class MyClient(discord.Client):
             return False
         msg = tag_user(message.author) + "\n"
         msg += '!poll "popis" "první možnost" "druhá možnost" - Vytvoří anketu. Může obsahovat dvě až devět možností.\n'
-        msg += '!all_graphic - zobrazí všechny příkay pro vložení všech obrázků nebo gifů.\n'
+        msg += '!list_images - zobrazí všechny příkay pro vložení všech obrázků nebo gifů.\n'
         msg += '!light [on|off] - Přepíná světlo připojené na raspberrypi u Matěje.\n'
         msg += '!sync - synchroniuje data s projektem na githubu.\n'
         if message.author.guild_permissions.administrator:
-            msg += '!add_graphic - přidá do možné grafiky nový obrázek.\n'
+            msg += '!add_image - přidá do možné grafiky nový obrázek.\n'
         await message.channel.send(msg)
         await message.delete()
 
     @staticmethod
     async def __add_graphic(message):
-        if not message.content.startswith('!add_graphic'):
+        if not message.content.startswith('!add_image'):
             return False
         if message.author.guild_permissions.administrator:
             for attachment in message.attachments:
