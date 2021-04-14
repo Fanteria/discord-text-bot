@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 
 from socket_client import socket_client
 
-number_emotes = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
+from emotes import EMOTES, NUMBER_EMOTES
+
 image_types = ["png", "jpeg", "gif", "jpg"]
 
 
@@ -71,7 +72,7 @@ class MyClient(discord.Client):
 
             msg_str = message.author.name + ": " + attributes[0] + "\n"
             for i in range(1, len(attributes)):
-                msg_str += number_emotes[i]
+                msg_str += NUMBER_EMOTES[i]
                 msg_str += " "
                 msg_str += attributes[i]
                 msg_str += "\n"
@@ -80,7 +81,7 @@ class MyClient(discord.Client):
             await message.delete()
 
             for i in range(1, len(attributes)):
-                await msg.add_reaction(number_emotes[i])
+                await msg.add_reaction(NUMBER_EMOTES[i])
 
             return True
         else:
