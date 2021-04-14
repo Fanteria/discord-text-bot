@@ -163,7 +163,7 @@ class MyClient(discord.Client):
             message.channel.send('Neplatný stav světla. Správně je: **!light [on|off]**')
             return True
         light_state = 1 if message.content.lower() == '!light on' else 0
-        sent = await socket_client.switch_light(SOCKET_SERVER_ADDRESS, light_state)
+        sent = socket_client.switch_light(SOCKET_SERVER_ADDRESS, light_state)
         if sent: await message.delete()
         else:
             await message.add_reaction(EMOTES["confused"])

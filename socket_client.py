@@ -4,15 +4,15 @@ class socket_client:
     @staticmethod
     def __connect_eventhandler(sio, state, sent):
             sio.emit('bot-light', state)
-            sent = True
+            sent["state"] = True
             time.sleep(0.2)
             sio.disconnect()
     @staticmethod
     def __connect_error_eventhandler(sio, err):
         sio.disconnect()
     @staticmethod
-    async def switch_light(server_address, state: int = 0):
-        sent = False
+    def switch_light(server_address, state: int = 0):
+        sent = {"state":False}
         state = min(max(int(state), 0), 1)
         sio = socketio.Client()
         sio.on("connect", lambda : socket_client.__connect_eventhandler(sio, state, sent))
@@ -21,7 +21,7 @@ class socket_client:
             sio.connect(server_address)
             sio.wait()
         finally:
-            return sent
+            return sent["state"]
         
 
 if __name__ == "__main__":
