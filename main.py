@@ -160,6 +160,7 @@ class MyClient(discord.Client):
         if not message.content.startswith('!light'):
             return False
         if not (message.content.lower() == '!light on' or message.content.lower() == '!light off'):
+            await message.add_reaction(EMOTES["middle_finger"])
             await message.channel.send('Neplatný stav světla. Správně je: **!light [on|off]**')
             return True
         light_state = 1 if message.content.lower() == '!light on' else 0
